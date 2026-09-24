@@ -34,8 +34,6 @@ const links = [
         <NuxtLink v-for="l in links" :key="l.to" :to="l.to">{{ l.label }}</NuxtLink>
       </nav>
 
-      <a class="header__phone" :href="`tel:${site.phoneHref}`">{{ site.phone }}</a>
-
       <button
         class="burger"
         type="button"

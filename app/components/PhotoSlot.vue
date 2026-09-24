@@ -16,6 +16,11 @@ const props = withDefaults(
     alt?: string
     /** Співвідношення сторін, напр. "4 / 3" або "16 / 9" */
     ratio?: string
+    /**
+     * Фото-тло: розтягується на весь батьківський блок замість того,
+     * щоб тримати співвідношення сторін. Для першого екрана головної.
+     */
+    fill?: boolean
     class?: string
   }>(),
   { ratio: '4 / 3' },
@@ -23,7 +28,11 @@ const props = withDefaults(
 </script>
 
 <template>
-  <div class="photo" :class="props.class" :style="{ aspectRatio: props.ratio }">
+  <div
+    class="photo"
+    :class="[props.class, { 'photo--fill': props.fill }]"
+    :style="props.fill ? undefined : { aspectRatio: props.ratio }"
+  >
     <img v-if="props.src" :src="props.src" :alt="props.alt || props.hint" loading="lazy" />
     <template v-else>
       <svg

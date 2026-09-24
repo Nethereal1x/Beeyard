@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { site, products, story, featuredSlugs } from '~/data/site'
+import { site, story } from '~/data/site'
 
 useSeoMeta({
   title: `${site.name} — карпатський мед із власної пасіки в Солочині`,
@@ -9,52 +9,56 @@ useSeoMeta({
   ogDescription: 'Зрілий мед із гірської пасіки на Свалявщині. Доставка по всій Україні.',
   ogType: 'website',
 })
-
-// Які сорти показувати — задається списком `featuredSlugs` в app/data/site.ts
-const featured = featuredSlugs
-  .map((slug) => products.find((p) => p.slug === slug))
-  .filter((p): p is NonNullable<typeof p> => Boolean(p))
-
-const money = (n: number) => `${new Intl.NumberFormat('uk-UA').format(n)} грн`
 </script>
 
 <template>
   <!-- ─── Головний екран ──────────────────────────────────────────────── -->
   <section class="hero">
-    <div class="wrap hero__grid">
-      <div>
-        <span class="hero__eyebrow">{{ site.village }} · Закарпаття</span>
-        <h1>Мед, за який ми можемо відповісти особисто</h1>
-        <p>
-          Наша пасіка стоїть у Солочині, на 400 метрів над рівнем моря, серед полонин Свалявщини.
-          Бджоли літають на дикорослі карпатські трави — не на оброблені пестицидами поля.
-        </p>
-        <div class="hero__cta">
-          <NuxtLink to="/produktsiia" class="btn btn--primary">Дивитися ціни</NuxtLink>
-          <a :href="`tel:${site.phoneHref}`" class="btn btn--ghost">{{ site.phone }}</a>
-        </div>
+    <!-- Фото-тло на всю ширину; картка з текстом лежить поверх нього -->
+    <div class="hero__stage">
+      <PhotoSlot
+        fill
+        hint="Головне фото: пасіка серед гір або господар біля вулика. Горизонтальне, добре освітлене, реальне — не стокове."
+        alt="Пасіка в селі Солочин на Закарпатті"
+      />
+      <span class="hero__scrim" aria-hidden="true" />
 
-        <div class="hero__facts">
-          <div class="fact">
-            <strong>400 м</strong>
-            <span>над рівнем моря</span>
-          </div>
-          <div class="fact">
-            <strong>6 сортів</strong>
-            <span>меду за сезон</span>
-          </div>
-          <div class="fact">
-            <strong>40 °C</strong>
-            <span>максимальний нагрів</span>
+      <div class="wrap hero__inner">
+        <div class="hero__card">
+          <span class="hero__eyebrow">{{ site.village }} · Закарпаття</span>
+          <h1>Мед, за який ми можемо відповісти особисто</h1>
+          <p>
+            Пасіка стоїть у Солочині, на 400 метрів над рівнем моря. Бджоли літають на дикорослі
+            карпатські трави — не на оброблені пестицидами поля.
+          </p>
+          <div class="hero__cta">
+            <NuxtLink to="/produktsiia" class="btn btn--primary">Дивитися ціни</NuxtLink>
+            <a :href="`tel:${site.phoneHref}`" class="btn btn--ghost">{{ site.phone }}</a>
           </div>
         </div>
       </div>
+    </div>
 
-      <PhotoSlot
-        ratio="4 / 5"
-        hint="Головне фото: пасіка серед гір або господар біля вулика. Добре освітлене, реальне — не стокове."
-        alt="Пасіка в селі Солочин на Закарпатті"
-      />
+    <!-- Смуга фактів по низу екрана -->
+    <div class="hero__strip">
+      <div class="wrap hero__facts">
+        <div class="fact">
+          <strong>400 м</strong>
+          <span>над рівнем моря</span>
+        </div>
+        <div class="fact">
+          <strong>6 сортів</strong>
+          <span>меду за сезон</span>
+        </div>
+        <div class="fact">
+          <strong>40 °C</strong>
+          <span>максимальний нагрів</span>
+        </div>
+        <div class="fact">
+          <strong>0 кг</strong>
+          <span>цукру на медозборі</span>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -107,36 +111,17 @@ const money = (n: number) => `${new Intl.NumberFormat('uk-UA').format(n)} грн
   </section>
 
   <!-- ─── Сорти ───────────────────────────────────────────────────────── -->
-  <section class="section section--tint">
+  <section id="sorty" class="section section--tint">
     <div class="wrap">
       <div class="section__head">
-        <h2>Наші сорти</h2>
+        <h2>Медовий рік у Солочині</h2>
         <p>
-          Кожен сорт — з конкретного медозбору. Не змішуємо й не доливаємо торішнє до цьогорічного.
+          Мед не буває «завжди в наявності». Кожен сорт живе рівно стільки, скільки цвіте його
+          рослина — ось коли саме ми качаємо який. Оберіть смугу, щоб прочитати про сорт.
         </p>
       </div>
 
-      <div class="grid grid--3">
-        <article v-for="p in featured" :key="p.slug" class="product">
-          <PhotoSlot
-            class="product__media"
-            ratio="4 / 3"
-            :hint="`Фото: мед «${p.name}» — банка на світлому фоні`"
-            :alt="`${p.name} мед із пасіки ${site.name}`"
-          />
-          <div class="product__body">
-            <span v-if="p.badge" class="product__badge">{{ p.badge }}</span>
-            <h3>{{ p.name }}</h3>
-            <p class="product__summary">{{ p.summary }}</p>
-            <div class="product__prices">
-              <div v-for="pack in p.packagings" :key="pack.label" class="price-row">
-                <span>{{ pack.label }}</span>
-                <b>{{ money(pack.price) }}</b>
-              </div>
-            </div>
-          </div>
-        </article>
-      </div>
+      <HoneyCalendar />
 
       <p style="margin-top: 32px">
         <NuxtLink to="/produktsiia" class="btn btn--primary">
@@ -199,11 +184,11 @@ const money = (n: number) => `${new Intl.NumberFormat('uk-UA').format(n)} грн
       <div class="cta-band">
         <h2>Приїжджайте подивитися</h2>
         <p>
-          Ми не анонімний склад. Пасіка за адресою {{ site.address }} — телефонуйте, домовляйтеся й
+          Ми не анонімний склад. Пасіка за адресою {{ site.address }} — домовляйтеся заздалегідь і
           приїжджайте. Покажемо вулики й дамо скуштувати всі сорти.
         </p>
         <p style="margin-top: 24px; margin-bottom: 0">
-          <a :href="`tel:${site.phoneHref}`" class="btn btn--primary">{{ site.phone }}</a>
+          <NuxtLink to="/kontakty" class="btn btn--primary">Як із нами звʼязатися</NuxtLink>
         </p>
       </div>
     </div>

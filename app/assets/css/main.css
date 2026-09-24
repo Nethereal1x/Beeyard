@@ -229,12 +229,6 @@ img {
   font-weight: 600;
 }
 
-.header__phone {
-  font-weight: 600;
-  color: var(--bark);
-  white-space: nowrap;
-}
-
 .burger {
   display: none;
   background: none;
@@ -248,9 +242,6 @@ img {
 @media (max-width: 900px) {
   .burger {
     display: block;
-  }
-  .header__phone {
-    display: none;
   }
   .nav {
     display: none;
@@ -281,12 +272,49 @@ img {
   overflow: hidden;
 }
 
-.hero__grid {
-  display: grid;
-  grid-template-columns: 1.05fr 0.95fr;
-  gap: clamp(32px, 5vw, 64px);
-  align-items: center;
-  padding-block: clamp(48px, 7vw, 92px);
+/* Площина з фото — закінчується над смугою фактів */
+.hero__stage {
+  position: relative;
+  overflow: hidden;
+}
+
+.hero__scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    100deg,
+    rgba(40, 28, 18, 0.45) 0%,
+    rgba(40, 28, 18, 0.18) 48%,
+    rgba(40, 28, 18, 0) 78%
+  );
+}
+
+.hero__inner {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  min-height: clamp(440px, 64vh, 660px);
+  padding-block: clamp(36px, 6vw, 72px);
+}
+
+/* Картка поверх фото: щільний фон, щоб текст читався на будь-якому знімку */
+.hero__card {
+  max-width: 580px;
+  padding: clamp(24px, 3vw, 38px);
+  background: rgba(253, 248, 240, 0.94);
+  backdrop-filter: blur(8px);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lift);
+}
+.hero__card h1 {
+  margin-bottom: 14px;
+}
+
+/* Смуга фактів по низу першого екрана */
+.hero__strip {
+  position: relative;
+  background: var(--white);
+  border-top: 1px solid var(--line);
 }
 
 .hero__eyebrow {
@@ -313,12 +341,14 @@ img {
 }
 
 .hero__facts {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 32px;
-  margin-top: 44px;
-  padding-top: 28px;
-  border-top: 1px solid var(--line);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  padding-block: 22px;
+}
+.hero__facts .fact + .fact {
+  padding-left: 24px;
+  border-left: 1px solid var(--line);
 }
 
 .fact strong {
@@ -337,8 +367,31 @@ img {
 }
 
 @media (max-width: 860px) {
-  .hero__grid {
-    grid-template-columns: 1fr;
+  /* Картка на вузькому екрані займає майже всю ширину, тому відсуваємо її
+     вниз — інакше фото видно лише тонкою рамкою по краях */
+  .hero__inner {
+    min-height: 0;
+    padding-top: clamp(120px, 19vh, 170px);
+    padding-bottom: 24px;
+  }
+  .hero__card {
+    padding: 22px;
+  }
+  .hero__card h1 {
+    font-size: clamp(1.7rem, 7vw, 2rem);
+  }
+  .hero__facts {
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+  /* У сітці 2×2 розділова лінія потрібна лише між колонками */
+  .hero__facts .fact + .fact {
+    padding-left: 0;
+    border-left: 0;
+  }
+  .hero__facts .fact:nth-child(even) {
+    padding-left: 18px;
+    border-left: 1px solid var(--line);
   }
 }
 
@@ -363,6 +416,19 @@ img {
   border-radius: var(--radius);
   color: var(--bark-soft);
   overflow: hidden;
+}
+
+/* Фото-тло: розтягується на батьківський блок (перший екран головної) */
+.photo--fill {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  border-radius: 0;
+  /* Підказку тримаємо в нижньому правому куті — по центру її накриє картка */
+  align-items: flex-end;
+  justify-content: flex-end;
+  text-align: right;
+  padding: 28px;
 }
 
 .photo img {
@@ -436,6 +502,440 @@ img {
   margin-bottom: 14px;
 }
 
+/* ─── Медовий рік: шкала сезону на головній ───────────────────────────── */
+.honey-year__scale {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  margin-left: 168px;
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--bark-soft);
+  padding-bottom: 8px;
+}
+
+.honey-year__track {
+  position: relative;
+  border-top: 1px solid var(--line);
+  padding: 10px 0;
+}
+
+/* Шар із лініями місяців — рівно над колонкою смуг */
+.honey-year__overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 168px;
+  right: 0;
+  pointer-events: none;
+}
+
+.honey-year__gridline {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--line);
+}
+
+.honey-year__now {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--forest);
+  opacity: 0.55;
+  z-index: 2;
+}
+.honey-year__now b {
+  position: absolute;
+  top: -1px;
+  left: 6px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--forest);
+  white-space: nowrap;
+}
+
+.honey-year__row {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 168px 1fr;
+  align-items: center;
+  width: 100%;
+  gap: 0;
+  padding: 7px 0;
+  background: none;
+  border: 0;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: background 0.16s ease;
+}
+.honey-year__row:hover {
+  background: rgba(200, 135, 27, 0.07);
+}
+
+.honey-year__label {
+  padding-right: 16px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--bark-soft);
+  transition: color 0.16s ease;
+}
+.honey-year__row.is-active .honey-year__label {
+  color: var(--bark);
+  font-weight: 600;
+}
+
+.honey-year__lane {
+  position: relative;
+  display: block;
+  height: 34px;
+}
+
+/* Смуга — чистий колір меду, без тексту: на коротких медозборах
+   (акацієвий, малиновий) підпис усе одно не вмістився б */
+.honey-year__bar {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  border-radius: 999px;
+  opacity: 0.55;
+  transition: opacity 0.16s ease, top 0.16s ease, bottom 0.16s ease,
+    box-shadow 0.16s ease;
+}
+.honey-year__row:hover .honey-year__bar {
+  opacity: 0.8;
+}
+/* Обрана смуга виростає на всю висоту доріжки — видно навіть найкоротшу */
+.honey-year__row.is-active .honey-year__bar {
+  top: 0;
+  bottom: 0;
+  opacity: 1;
+  box-shadow: var(--shadow);
+}
+
+/* Розгорнутий опис обраного сорту */
+.honey-year__detail {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 28px;
+  align-items: start;
+  margin-top: 28px;
+  padding: 24px;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.honey-year__photo {
+  border: none;
+  border-radius: var(--radius-sm);
+}
+
+.honey-year__harvest {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: var(--forest);
+}
+.honey-year__harvest i {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  border: 1px solid rgba(58, 42, 28, 0.18);
+}
+
+.honey-year__detail h3 {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 6px 0 10px;
+  font-size: 1.4rem;
+}
+.honey-year__detail h3 em {
+  background: var(--honey-pale);
+  color: #8a5c0d;
+  font-style: normal;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+.honey-year__detail p {
+  color: var(--bark-soft);
+  font-size: 0.95rem;
+  margin-bottom: 18px;
+}
+
+/* Один рядок про смак — те, що раніше не вміщалося на смузі */
+.honey-year__detail p.honey-year__note {
+  font-size: 1.05rem;
+  line-height: 1.45;
+  color: var(--bark);
+  margin-bottom: 10px;
+}
+
+.honey-year__prices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.honey-year__prices > div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+}
+.honey-year__prices span {
+  font-size: 0.8rem;
+  color: var(--bark-soft);
+}
+.honey-year__prices b {
+  font-variant-numeric: var(--nums);
+  font-size: 1.02rem;
+}
+@media (max-width: 760px) {
+  .honey-year__scale,
+  .honey-year__overlay {
+    margin-left: 0;
+    left: 0;
+  }
+  /* На вузькому екрані назва сорту йде над смугою, а не збоку */
+  .honey-year__scale {
+    font-size: 0.66rem;
+    letter-spacing: 0.02em;
+  }
+  .honey-year__row {
+    grid-template-columns: 1fr;
+    padding: 10px 0 4px;
+  }
+  .honey-year__label {
+    padding: 0 0 4px;
+    font-size: 0.88rem;
+  }
+  .honey-year__lane {
+    height: 22px;
+  }
+  .honey-year__now b {
+    display: none;
+  }
+  .honey-year__detail {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .honey-year__photo {
+    max-width: 200px;
+  }
+}
+
+/* ─── Сторінка «Про пасіку» ───────────────────────────────────────────── */
+.apiary__intro {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 48px;
+  align-items: start;
+}
+.apiary__intro h1 {
+  margin-bottom: 14px;
+}
+.apiary__intro .lede {
+  margin-bottom: 18px;
+}
+.apiary__intro .muted {
+  font-size: 0.97rem;
+}
+
+/* Паспорт пасіки: ряди «поле — значення» */
+.apiary__facts {
+  border-top: 2px solid var(--bark);
+}
+.apiary__facts > div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--line);
+}
+.apiary__facts dt {
+  font-size: 0.85rem;
+  color: var(--bark-soft);
+  white-space: nowrap;
+}
+.apiary__facts dd {
+  font-weight: 600;
+  text-align: right;
+}
+
+/* Пара «як зазвичай / як у нас» */
+.versus {
+  padding: 26px 0;
+  border-top: 1px solid var(--line);
+}
+.versus:first-of-type {
+  border-top: 0;
+}
+.versus h3 {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  font-size: 1.25rem;
+  margin-bottom: 16px;
+}
+.versus__num {
+  font-variant-numeric: var(--nums);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--honey);
+}
+
+.versus__pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.versus__side {
+  padding: 18px 20px;
+  border-radius: var(--radius);
+}
+.versus__side p {
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+/* Ліва половина — чужа практика: приглушена, без акценту */
+.versus__side--common {
+  background: rgba(58, 42, 28, 0.04);
+  color: var(--bark-soft);
+}
+/* Права — наша: білий папір і медова смуга збоку */
+.versus__side--ours {
+  background: var(--white);
+  border-left: 3px solid var(--honey);
+  box-shadow: var(--shadow);
+}
+
+.versus__tag {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.versus__side--common .versus__tag {
+  color: var(--bark-soft);
+  opacity: 0.7;
+}
+.versus__side--ours .versus__tag {
+  color: var(--honey);
+}
+
+.apiary__shot figcaption {
+  margin-top: 12px;
+  font-size: 0.9rem;
+  color: var(--bark-soft);
+}
+
+@media (max-width: 900px) {
+  .apiary__intro {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .versus__pair {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
+
+/* ─── Сторінка «Доставка й оплата»: рядки фактів ──────────────────────── */
+.specs {
+  border-top: 2px solid var(--bark);
+  max-width: 900px;
+}
+.specs__row {
+  display: grid;
+  grid-template-columns: 190px 140px 1fr;
+  align-items: baseline;
+  gap: 18px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
+}
+.specs__key {
+  font-weight: 600;
+}
+.specs__val {
+  font-variant-numeric: var(--nums);
+  color: var(--honey);
+  white-space: nowrap;
+}
+.specs__note {
+  color: var(--bark-soft);
+  font-size: 0.93rem;
+}
+
+.parcels {
+  margin-top: 44px;
+  max-width: 900px;
+}
+.parcels h2 {
+  margin-bottom: 8px;
+}
+.parcels .muted {
+  font-size: 0.93rem;
+}
+.parcels__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 18px 0;
+}
+.parcels__list > div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 12px 18px;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+}
+.parcels__list span {
+  font-size: 0.82rem;
+  color: var(--bark-soft);
+}
+.parcels__list b {
+  font-variant-numeric: var(--nums);
+  font-size: 1.1rem;
+}
+.parcels__pack {
+  margin-top: 6px;
+}
+
+@media (max-width: 700px) {
+  .specs__row {
+    grid-template-columns: 1fr auto;
+    gap: 4px 14px;
+  }
+  .specs__note {
+    grid-column: 1 / -1;
+  }
+}
+
 /* ─── Картка товару ───────────────────────────────────────────────────── */
 .product {
   display: flex;
@@ -477,11 +977,6 @@ img {
   padding: 4px 10px;
   border-radius: 999px;
   margin-bottom: 12px;
-}
-
-.product__summary {
-  color: var(--bark-soft);
-  font-size: 0.95rem;
 }
 
 .product__desc {
