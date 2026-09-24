@@ -96,13 +96,18 @@ useSeoMeta({
 
   <section class="section section--tint">
     <div class="wrap">
-      <div class="section__head">
+      <div class="cta-band">
         <h2>Замовити з доставкою</h2>
         <p>
-          Якщо телефонувати незручно — порахуйте вартість і залиште заявку, ми передзвонимо самі.
+          Якщо телефонувати незручно — порахуйте вартість у калькуляторі й залиште заявку. Ми
+          передзвонимо самі, підтвердимо наявність і узгодимо доставку.
+        </p>
+        <p style="margin-top: 24px; margin-bottom: 0">
+          <NuxtLink to="/produktsiia#rozrahunok" class="btn btn--primary">
+            До калькулятора
+          </NuxtLink>
         </p>
       </div>
-      <PriceCalculator />
     </div>
   </section>
 </template>
