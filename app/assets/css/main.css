@@ -11,8 +11,14 @@
   --white: #ffffff;
   --line: #e4d5be;
 
-  --font-display: 'Lora', Georgia, 'Times New Roman', serif;
-  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  /* Cormorant Garamond — тонка антиква для заголовків, Manrope — для тексту */
+  --font-display: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  --font-body: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  /* Cormorant за замовчуванням дає мінускульні цифри («01» схоже на «оı»).
+     Там, де цифру треба читати точно — ціни, ваги, номери — вмикаємо
+     мажускульні моноширинні. */
+  --nums: lining-nums tabular-nums;
 
   --radius: 14px;
   --radius-sm: 8px;
@@ -42,25 +48,31 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* Cormorant оптично дрібніший за звичайні шрифти — тому кегль більший,
+   а міжрядковий інтервал щільніший, ніж узяв би для гротеску. */
 h1,
 h2,
 h3,
 h4 {
   font-family: var(--font-display);
   font-weight: 600;
-  line-height: 1.2;
-  margin: 0 0 0.5em;
+  line-height: 1.12;
+  letter-spacing: -0.005em;
+  margin: 0 0 0.4em;
   color: var(--bark);
 }
 
 h1 {
-  font-size: clamp(2.1rem, 5vw, 3.4rem);
+  font-size: clamp(2.7rem, 6.4vw, 4.5rem);
 }
 h2 {
-  font-size: clamp(1.6rem, 3.5vw, 2.3rem);
+  font-size: clamp(2.1rem, 4.6vw, 3.1rem);
 }
 h3 {
-  font-size: 1.25rem;
+  font-size: 1.5rem;
+}
+h4 {
+  font-size: 1.2rem;
 }
 
 p {
@@ -180,7 +192,7 @@ img {
   align-items: center;
   gap: 10px;
   font-family: var(--font-display);
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   font-weight: 700;
   color: var(--bark);
   white-space: nowrap;
@@ -308,9 +320,11 @@ img {
 }
 
 .fact strong {
+  font-variant-numeric: var(--nums);
   display: block;
   font-family: var(--font-display);
-  font-size: 1.7rem;
+  font-size: 2.2rem;
+  font-weight: 700;
   color: var(--honey);
   line-height: 1.1;
 }
@@ -406,6 +420,7 @@ img {
 }
 
 .card__num {
+  font-variant-numeric: var(--nums);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -500,8 +515,10 @@ img {
 }
 
 .price-row b {
+  font-variant-numeric: var(--nums);
   font-family: var(--font-display);
-  font-size: 1.12rem;
+  font-size: 1.35rem;
+  font-weight: 700;
   color: var(--bark);
   white-space: nowrap;
 }
@@ -634,8 +651,9 @@ img {
 }
 
 .calc__total-sum {
+  font-variant-numeric: var(--nums);
   font-family: var(--font-display);
-  font-size: 2rem;
+  font-size: 2.6rem;
   font-weight: 700;
   color: #8a5c0d;
   line-height: 1;
@@ -794,6 +812,134 @@ img {
   gap: 8px 20px;
   justify-content: space-between;
   color: #9d8a75;
+}
+
+/* ─── Смуги «фото / текст» ────────────────────────────────────────────── */
+.stripe {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(28px, 5vw, 68px);
+  align-items: center;
+}
+
+.stripe + .stripe {
+  margin-top: clamp(52px, 8vw, 104px);
+}
+
+/* Парні смуги віддзеркалюємо: фото переїжджає праворуч */
+.stripe--reverse .stripe__media {
+  order: 2;
+}
+
+.stripe__index {
+  font-variant-numeric: var(--nums);
+  display: block;
+  font-family: var(--font-display);
+  font-size: 3.2rem;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--honey-pale);
+  margin-bottom: 4px;
+}
+
+.stripe__text h2 {
+  margin-bottom: 0.35em;
+}
+
+.stripe__text p {
+  color: var(--bark-soft);
+  max-width: 52ch;
+}
+
+.stripe__points {
+  list-style: none;
+  margin: 22px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.stripe__points li {
+  display: flex;
+  gap: 11px;
+  align-items: flex-start;
+  font-size: 0.97rem;
+  color: var(--bark);
+}
+
+.stripe__points svg {
+  flex: none;
+  margin-top: 4px;
+  color: var(--forest);
+}
+
+@media (max-width: 800px) {
+  .stripe {
+    grid-template-columns: 1fr;
+  }
+  /* На вузькому екрані фото завжди зверху, інакше порядок стрибає */
+  .stripe--reverse .stripe__media {
+    order: 0;
+  }
+}
+
+/* ─── FAQ ─────────────────────────────────────────────────────────────── */
+.faq {
+  max-width: 800px;
+  border-top: 1px solid var(--line);
+}
+
+.faq__item {
+  border-bottom: 1px solid var(--line);
+}
+
+.faq__item summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 22px 0;
+  cursor: pointer;
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--bark);
+  list-style: none;
+  transition: color 0.15s ease;
+}
+
+.faq__item summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq__item summary:hover {
+  color: var(--honey);
+}
+
+.faq__item summary:focus-visible {
+  outline: 2px solid var(--honey);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+.faq__icon {
+  flex: none;
+  color: var(--honey);
+  transition: transform 0.2s ease;
+}
+
+.faq__item[open] .faq__icon {
+  transform: rotate(45deg);
+}
+
+.faq__answer {
+  padding: 0 0 24px;
+  margin: 0;
+  max-width: 66ch;
+  color: var(--bark-soft);
+  font-size: 0.99rem;
 }
 
 /* ─── Дрібниці ────────────────────────────────────────────────────────── */
