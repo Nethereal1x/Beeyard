@@ -91,7 +91,9 @@ async function submit() {
     Замовлення: orderText.value,
     Сума: money(total.value),
     Вага: weightLabel.value,
-    Імʼя: form.name,
+    // У лапках, бо ’ — це пунктуація, а не літера: без лапок ключ не є
+    // коректним ідентифікатором JavaScript.
+    'Ім’я': form.name,
     Телефон: form.phone,
     Місто: form.city,
     Перевізник: form.carrier,
@@ -220,7 +222,7 @@ async function submit() {
       <template v-if="status !== 'ok'">
         <div class="form-grid">
           <div class="field">
-            <label for="name">Імʼя *</label>
+            <label for="name">Ім’я *</label>
             <input
               id="name"
               v-model="form.name"
