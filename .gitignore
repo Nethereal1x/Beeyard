@@ -1,0 +1,25 @@
+# Nuxt
+.nuxt
+.output
+.data
+dist
+.nitro
+.cache
+
+# Залежності
+node_modules
+
+# Логи
+logs
+*.log
+.npm
+
+# Змінні оточення
+.env
+.env.*
+!.env.example
+
+# Системне
+.DS_Store
+.vscode
+.idea

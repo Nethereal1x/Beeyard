@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Коли буде куплено домен — розкоментувати й вписати його:
+# Sitemap: https://medova-polonyna.com.ua/sitemap.xml
