@@ -26,9 +26,10 @@ const money = (n: number) => `${new Intl.NumberFormat('uk-UA').format(n)} грн
         <article v-for="p in products" :key="p.slug" class="product">
           <PhotoSlot
             class="product__media"
+            :src="p.photo"
             ratio="4 / 3"
             :hint="`Фото: мед «${p.name}» — банка на світлому фоні`"
-            :alt="`${p.name} — ${site.name}`"
+            :alt="`Банка меду «${p.name}», 500 г — ${site.name}`"
           />
           <div class="product__body">
             <span v-if="p.badge" class="product__badge">{{ p.badge }}</span>

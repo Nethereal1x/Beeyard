@@ -278,15 +278,26 @@ img {
   overflow: hidden;
 }
 
+/* Текст лежить просто на фото, тому затемнення робить всю роботу картки:
+   вертикальний шар тримає контраст під заголовком на будь-якому знімку,
+   горизонтальний — гасить лівий бік, залишаючи правий (гори, небо) відкритим. */
 .hero__scrim {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    100deg,
-    rgba(40, 28, 18, 0.45) 0%,
-    rgba(40, 28, 18, 0.18) 48%,
-    rgba(40, 28, 18, 0) 78%
-  );
+  background:
+    linear-gradient(
+      to top,
+      rgba(28, 19, 11, 0.82) 0%,
+      rgba(28, 19, 11, 0.55) 34%,
+      rgba(28, 19, 11, 0.12) 72%,
+      rgba(28, 19, 11, 0.28) 100%
+    ),
+    linear-gradient(
+      100deg,
+      rgba(28, 19, 11, 0.55) 0%,
+      rgba(28, 19, 11, 0.24) 52%,
+      rgba(28, 19, 11, 0) 84%
+    );
 }
 
 .hero__inner {
@@ -297,17 +308,16 @@ img {
   padding-block: clamp(36px, 6vw, 72px);
 }
 
-/* Картка поверх фото: щільний фон, щоб текст читався на будь-якому знімку */
+/* Без підкладки: текст світлий і лежить прямо на фото. Читабельність дає
+   .hero__scrim, а м'яка тінь страхує на випадок світлої ділянки знімка. */
 .hero__card {
   max-width: 580px;
-  padding: clamp(24px, 3vw, 38px);
-  background: rgba(253, 248, 240, 0.94);
-  backdrop-filter: blur(8px);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow-lift);
+  color: var(--cream);
+  text-shadow: 0 1px 14px rgba(24, 16, 9, 0.55);
 }
 .hero__card h1 {
   margin-bottom: 14px;
+  color: var(--white);
 }
 
 /* Смуга фактів по низу першого екрана */
@@ -323,14 +333,26 @@ img {
   font-weight: 600;
   letter-spacing: 0.09em;
   text-transform: uppercase;
-  color: var(--honey);
+  color: var(--honey-light);
   margin-bottom: 18px;
 }
 
 .hero p {
   font-size: 1.05rem;
-  color: var(--bark-soft);
+  color: rgba(253, 248, 240, 0.9);
   max-width: 50ch;
+}
+
+/* Друга кнопка на темному фоні: світла обводка замість кремової лінії */
+.hero__cta .btn--ghost {
+  color: var(--white);
+  border-color: rgba(255, 255, 255, 0.55);
+  text-shadow: none;
+}
+.hero__cta .btn--ghost:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: var(--white);
+  color: var(--white);
 }
 
 .hero__cta {
@@ -338,6 +360,10 @@ img {
   flex-wrap: wrap;
   gap: 12px;
   margin-top: 28px;
+}
+/* Кнопки мають власний фон — тінь тексту від картки їм тільки шкодить */
+.hero__cta .btn {
+  text-shadow: none;
 }
 
 .hero__facts {
@@ -367,15 +393,12 @@ img {
 }
 
 @media (max-width: 860px) {
-  /* Картка на вузькому екрані займає майже всю ширину, тому відсуваємо її
-     вниз — інакше фото видно лише тонкою рамкою по краях */
+  /* На вузькому екрані текст займає майже всю ширину, тому відсуваємо його
+     вниз — інакше фото видно лише тонкою смугою згори */
   .hero__inner {
-    min-height: 0;
+    min-height: clamp(420px, 72vh, 620px);
     padding-top: clamp(120px, 19vh, 170px);
-    padding-bottom: 24px;
-  }
-  .hero__card {
-    padding: 22px;
+    padding-bottom: 28px;
   }
   .hero__card h1 {
     font-size: clamp(1.7rem, 7vw, 2rem);
@@ -416,6 +439,13 @@ img {
   border-radius: var(--radius);
   color: var(--bark-soft);
   overflow: hidden;
+}
+
+/* Є справжнє фото — пунктирна рамка й штрихування заглушки більше не потрібні */
+.photo--filled {
+  padding: 0;
+  border: 0;
+  background: var(--cream-deep);
 }
 
 /* Фото-тло: розтягується на батьківський блок (перший екран головної) */
@@ -503,15 +533,31 @@ img {
 }
 
 /* ─── Медовий рік: шкала сезону на головній ───────────────────────────── */
+/* Ліва колонка шапки — рівно над назвами сортів, права — над смугами */
+.honey-year__head {
+  display: grid;
+  grid-template-columns: 192px 1fr;
+  align-items: end;
+  padding-bottom: 8px;
+}
+
+/* Без цієї підказки смуги читаються як звичайна інфографіка,
+   і люди не здогадуються, що по них можна клікати */
+.honey-year__hint {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--honey);
+  padding-right: 16px;
+}
+
 .honey-year__scale {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  margin-left: 168px;
   font-size: 0.78rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--bark-soft);
-  padding-bottom: 8px;
 }
 
 .honey-year__track {
@@ -525,7 +571,7 @@ img {
   position: absolute;
   top: 0;
   bottom: 0;
-  left: 168px;
+  left: 192px;
   right: 0;
   pointer-events: none;
 }
@@ -538,32 +584,11 @@ img {
   background: var(--line);
 }
 
-.honey-year__now {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 2px;
-  background: var(--forest);
-  opacity: 0.55;
-  z-index: 2;
-}
-.honey-year__now b {
-  position: absolute;
-  top: -1px;
-  left: 6px;
-  font-size: 0.68rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--forest);
-  white-space: nowrap;
-}
-
 .honey-year__row {
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: 168px 1fr;
+  grid-template-columns: 192px 1fr;
   align-items: center;
   width: 100%;
   gap: 0;
@@ -579,8 +604,20 @@ img {
 .honey-year__row:hover {
   background: rgba(200, 135, 27, 0.07);
 }
+/* Вибраний рядок лишається підсвіченим і без курсора — інакше не видно,
+   до якого саме сорту належить опис унизу */
+.honey-year__row.is-active {
+  background: rgba(200, 135, 27, 0.12);
+}
+.honey-year__row:focus-visible {
+  outline: 2px solid var(--honey);
+  outline-offset: 2px;
+}
 
 .honey-year__label {
+  display: flex;
+  align-items: center;
+  gap: 9px;
   padding-right: 16px;
   font-size: 0.95rem;
   font-weight: 500;
@@ -590,6 +627,25 @@ img {
 .honey-year__row.is-active .honey-year__label {
   color: var(--bark);
   font-weight: 600;
+}
+
+/* Крапка-перемикач: читається як список вибору, а не як інфографіка */
+.honey-year__dot {
+  flex: none;
+  width: 13px;
+  height: 13px;
+  border: 2px solid var(--line);
+  border-radius: 50%;
+  background: var(--white);
+  transition: border-color 0.16s ease, box-shadow 0.16s ease;
+}
+.honey-year__row:hover .honey-year__dot {
+  border-color: var(--honey);
+}
+.honey-year__row.is-active .honey-year__dot {
+  border-color: var(--honey);
+  /* Заливка всередині кільця — тінню, щоб не додавати ще один вузол */
+  box-shadow: inset 0 0 0 3px var(--honey);
 }
 
 .honey-year__lane {
@@ -709,12 +765,18 @@ img {
   font-size: 1.02rem;
 }
 @media (max-width: 760px) {
-  .honey-year__scale,
   .honey-year__overlay {
-    margin-left: 0;
     left: 0;
   }
-  /* На вузькому екрані назва сорту йде над смугою, а не збоку */
+  /* На вузькому екрані назва сорту йде над смугою, а не збоку,
+     тому підказка стає окремим рядком над шкалою місяців */
+  .honey-year__head {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+  .honey-year__hint {
+    padding-right: 0;
+  }
   .honey-year__scale {
     font-size: 0.66rem;
     letter-spacing: 0.02em;
@@ -729,9 +791,6 @@ img {
   }
   .honey-year__lane {
     height: 22px;
-  }
-  .honey-year__now b {
-    display: none;
   }
   .honey-year__detail {
     grid-template-columns: 1fr;

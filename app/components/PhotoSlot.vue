@@ -30,10 +30,17 @@ const props = withDefaults(
 <template>
   <div
     class="photo"
-    :class="[props.class, { 'photo--fill': props.fill }]"
+    :class="[props.class, { 'photo--fill': props.fill, 'photo--filled': props.src }]"
     :style="props.fill ? undefined : { aspectRatio: props.ratio }"
   >
-    <img v-if="props.src" :src="props.src" :alt="props.alt || props.hint" loading="lazy" />
+    <!-- Фото-тло першого екрана вантажимо одразу, решту — лише коли доскролили -->
+    <img
+      v-if="props.src"
+      :src="props.src"
+      :alt="props.alt || props.hint"
+      :loading="props.fill ? 'eager' : 'lazy'"
+      :fetchpriority="props.fill ? 'high' : undefined"
+    />
     <template v-else>
       <svg
         class="photo__icon"
