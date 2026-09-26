@@ -7,6 +7,22 @@ const route = useRoute()
 // Закриваємо мобільне меню після переходу на іншу сторінку
 watch(() => route.fullPath, () => (open.value = false))
 
+/**
+ * Угорі сторінки шапка майже прозора й пропускає фото під собою,
+ * а варто прокрутити — густішає, стискається й відкидає тінь.
+ * Слухач пасивний, стан оновлюємо лише коли він справді змінився.
+ */
+const stuck = ref(false)
+onMounted(() => {
+  const onScroll = () => {
+    const next = window.scrollY > 24
+    if (next !== stuck.value) stuck.value = next
+  }
+  onScroll()
+  window.addEventListener('scroll', onScroll, { passive: true })
+  onUnmounted(() => window.removeEventListener('scroll', onScroll))
+})
+
 const links = [
   { to: '/', label: 'Головна' },
   { to: '/produktsiia', label: 'Продукція та ціни' },
@@ -17,17 +33,41 @@ const links = [
 </script>
 
 <template>
-  <header class="header">
+  <header class="header" :class="{ 'header--stuck': stuck, 'header--open': open }">
     <div class="wrap header__inner">
       <NuxtLink to="/" class="logo">
-        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <!-- Знак: комірка стільника, налита медом. Хвиля по вершині заливки
+             читається і як поверхня меду, і як лінія полонини. -->
+        <svg
+          class="logo__mark"
+          width="30"
+          height="34"
+          viewBox="0 0 28 32"
+          fill="none"
+          aria-hidden="true"
+        >
+          <defs>
+            <clipPath id="logo-cell">
+              <path d="M14 1.2 26.8 8.6v14.8L14 30.8 1.2 23.4V8.6L14 1.2Z" />
+            </clipPath>
+          </defs>
           <path
-            d="M12 2c2.6 0 4.7 2.1 4.7 4.7 0 1.4-.6 2.6-1.5 3.5 1.6.9 2.8 2.6 2.8 4.6 0 3-2.7 5.5-6 5.5s-6-2.5-6-5.5c0-2 1.2-3.7 2.8-4.6A4.68 4.68 0 0 1 7.3 6.7C7.3 4.1 9.4 2 12 2Z"
-            fill="#c8871b"
+            d="M-2 16.6c2.7-2.7 5.4-2.7 8.1 0s5.4 2.7 8.1 0 5.4-2.7 8.1 0 5.4 2.7 8.1 0V34H-2V16.6Z"
+            fill="currentColor"
+            clip-path="url(#logo-cell)"
           />
-          <path d="M8.4 13.2h7.2M8.6 16.1h6.8" stroke="#fdf8f0" stroke-width="1.4" stroke-linecap="round" />
+          <path
+            d="M14 1.2 26.8 8.6v14.8L14 30.8 1.2 23.4V8.6L14 1.2Z"
+            stroke="currentColor"
+            stroke-width="1.7"
+            stroke-linejoin="round"
+          />
         </svg>
-        {{ site.name }}
+
+        <span class="logo__text">
+          <span class="logo__name">Медова <b>Полонина</b></span>
+          <span class="logo__sub">карпатський мед</span>
+        </span>
       </NuxtLink>
 
       <nav class="nav" :class="{ 'nav--open': open }">

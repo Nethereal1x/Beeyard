@@ -40,13 +40,29 @@ useSeoMeta({
           </p>
         </div>
 
-        <!-- Сухі факти замість загальних слів -->
-        <dl class="apiary__facts">
-          <div v-for="f in apiaryFacts" :key="f.label">
-            <dt>{{ f.label }}</dt>
-            <dd>{{ f.value }}</dd>
+        <!-- Сухі факти замість загальних слів — оформлені як бирка на банці -->
+        <aside class="passport">
+          <div class="passport__head">
+            <svg width="17" height="19" viewBox="0 0 17 19" fill="none" aria-hidden="true">
+              <path
+                d="M8.5 1 16 5.25v8.5L8.5 18 1 13.75v-8.5L8.5 1Z"
+                stroke="currentColor"
+                stroke-width="1.6"
+                stroke-linejoin="round"
+              />
+            </svg>
+            Паспорт пасіки
           </div>
-        </dl>
+
+          <dl class="passport__list">
+            <div v-for="f in apiaryFacts" :key="f.label" class="passport__row">
+              <dt>{{ f.label }}</dt>
+              <dd>{{ f.value }}</dd>
+            </div>
+          </dl>
+
+          <p class="passport__note">Дані станом на цей сезон. Приїжджайте — покажемо все на місці.</p>
+        </aside>
       </div>
     </div>
   </section>
@@ -91,16 +107,31 @@ useSeoMeta({
 
       <div class="grid grid--3">
         <figure class="apiary__shot">
-          <PhotoSlot ratio="3 / 4" hint="Загальний план: вулики на тлі гір" alt="Вулики пасіки в Солочині" />
+          <PhotoSlot
+            src="/images/pasika-vulyky.jpg"
+            ratio="3 / 4"
+            hint="Загальний план: вулики на тлі гір"
+            alt="Ряд вуликів на схилі над селом, за ними — лісисті гори"
+          />
           <figcaption>Пасіка стоїть на схилі над селом — звідси бджоли йдуть на полонину.</figcaption>
         </figure>
         <figure class="apiary__shot">
-          <PhotoSlot ratio="3 / 4" hint="Рамка із запечатаними сотами в руках" alt="Рамка із запечатаним медом" />
+          <PhotoSlot
+            src="/images/ramka-zapechatana.jpg"
+            ratio="3 / 4"
+            hint="Рамка із запечатаними сотами в руках"
+            alt="Рамка з медом, наполовину запечатана білою восковою кришечкою, з бджолами на сотах"
+          />
           <figcaption>Біла воскова кришечка на сотах — сигнал, що мед дозрів і його можна качати.</figcaption>
         </figure>
         <figure class="apiary__shot">
-          <PhotoSlot ratio="3 / 4" hint="Качка меду або фасування в банки" alt="Відкачування меду" />
-          <figcaption>Качаємо на місці й одразу фасуємо — між рамкою й банкою немає складу.</figcaption>
+          <PhotoSlot
+            src="/images/oglyad-simei.jpg"
+            ratio="3 / 4"
+            hint="Качка меду або фасування в банки"
+            alt="Бджоляр у захисному костюмі виймає рамку з вулика в саду"
+          />
+          <figcaption>Перед качкою переглядаємо кожну сім'ю — беремо тільки ті рамки, що вже запечатані.</figcaption>
         </figure>
       </div>
     </div>
