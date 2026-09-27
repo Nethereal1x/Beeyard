@@ -663,11 +663,34 @@ img {
 /* Без цієї підказки смуги читаються як звичайна інфографіка,
    і люди не здогадуються, що по них можна клікати */
 .honey-year__hint {
+  display: flex;
+  align-items: center;
+  gap: 7px;
   font-size: 0.78rem;
   font-weight: 600;
   letter-spacing: 0.04em;
   color: var(--honey);
   padding-right: 16px;
+}
+
+/* Крапка, що дихає, поки шкала гортається сама: підказка перестає бути
+   просто текстом і показує, що тут щось відбувається просто зараз */
+.honey-year__hint-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--honey);
+  opacity: 0.35;
+  transition: opacity 0.3s ease;
+}
+.honey-year.is-autoplay .honey-year__hint-dot {
+  opacity: 1;
+  animation: honey-blink 2s ease-in-out infinite;
+}
+
+@keyframes honey-blink {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(0.6); opacity: 0.35; }
 }
 
 .honey-year__scale {
@@ -734,6 +757,7 @@ img {
 }
 
 .honey-year__label {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 9px;
@@ -765,6 +789,97 @@ img {
   border-color: var(--honey);
   /* Заливка всередині кільця — тінню, щоб не додавати ще один вузол */
   box-shadow: inset 0 0 0 3px var(--honey);
+}
+
+/* Поки перемикає себе саме — навколо активної крапки розходиться коло.
+   Це найдешевший спосіб сказати «тут натискають», не додаючи тексту */
+.honey-year.is-autoplay .honey-year__row.is-active .honey-year__dot {
+  animation: honey-ping 2.4s ease-out infinite;
+}
+
+@keyframes honey-ping {
+  0% { box-shadow: inset 0 0 0 3px var(--honey), 0 0 0 0 rgba(200, 135, 27, 0.45); }
+  70% { box-shadow: inset 0 0 0 3px var(--honey), 0 0 0 9px rgba(200, 135, 27, 0); }
+  100% { box-shadow: inset 0 0 0 3px var(--honey), 0 0 0 0 rgba(200, 135, 27, 0); }
+}
+
+/* Указівник біля назви сорту. Лежить абсолютно, тому поява й зникнення
+   не совають назви; місце постійне — на межі колонки назв і доріжки */
+.honey-year__cursor {
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  color: var(--honey);
+  opacity: 0;
+  transform: translate(2px, -30%);
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+}
+.honey-year.is-autoplay .honey-year__row.is-active .honey-year__cursor {
+  opacity: 1;
+  /* Анімація перезапускається щоразу, коли рядок стає активним —
+     виходить короткий «клік» саме в мить перемикання */
+  animation: honey-tap 0.75s ease-out;
+}
+/* Під курсором указівник зайвий: людина вже й так керує сама */
+.honey-year__row:hover .honey-year__cursor {
+  opacity: 0;
+}
+
+@keyframes honey-tap {
+  0% { transform: translate(9px, 10%); opacity: 0; }
+  35% { transform: translate(2px, -30%); opacity: 1; }
+  55% { transform: translate(2px, -30%) scale(0.78); }
+  75% { transform: translate(2px, -30%) scale(1); }
+  100% { transform: translate(2px, -30%); opacity: 1; }
+}
+
+/* «детальніше →» у правому кінці рядка: з'являється під курсором і прямо
+   називає, що станеться після кліку. Висить над доріжкою, а не всередині
+   неї — інакше змістилися б смуги, бо їх ширина рахується у відсотках */
+.honey-year__more {
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  transform: translate(6px, -50%);
+  padding-left: 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--honey);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.16s ease, transform 0.16s ease;
+}
+.honey-year__row:hover .honey-year__more,
+.honey-year__row:focus-visible .honey-year__more {
+  opacity: 1;
+  transform: translate(0, -50%);
+}
+
+/* Зміна картки під шкалою: коротке згасання, щоб самоперемикання
+   читалося як перехід, а не як стрибок тексту */
+.honey-swap-enter-active,
+.honey-swap-leave-active {
+  transition: opacity 0.22s ease, transform 0.22s ease;
+}
+.honey-swap-enter-from,
+.honey-swap-leave-to {
+  opacity: 0;
+  transform: translateY(6px);
+}
+
+/* Системна вимога «менше руху» вимикає і пульсацію, і згасання картки */
+@media (prefers-reduced-motion: reduce) {
+  .honey-year__hint-dot,
+  .honey-year.is-autoplay .honey-year__row.is-active .honey-year__dot {
+    animation: none;
+  }
+  .honey-swap-enter-active,
+  .honey-swap-leave-active {
+    transition: none;
+  }
 }
 
 .honey-year__lane {
@@ -903,6 +1018,13 @@ img {
   .honey-year__row {
     grid-template-columns: 1fr;
     padding: 10px 0 4px;
+  }
+  /* На дотик наведення немає, а місця обмаль — підказка зайва.
+     Указівник теж ховаємо: мітка тут на всю ширину, і він відривається
+     від назви в порожній правий кут */
+  .honey-year__more,
+  .honey-year__cursor {
+    display: none;
   }
   .honey-year__label {
     padding: 0 0 4px;
