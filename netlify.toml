@@ -1,0 +1,84 @@
+# Налаштування деплою на Netlify.
+# Файл лежить у репозиторії, тому збірка відтворюється однаково
+# й не залежить від того, що виставлено в кабінеті Netlify.
+
+[build]
+  # Статична генерація: кожна сторінка стає готовим HTML.
+  command = "npm run generate"
+  publish = ".output/public"
+
+[build.environment]
+  # Явний пресет прибирає неоднозначність: без нього Nitro на Netlify
+  # може зібратися в серверний режим і скласти файли в іншу теку.
+  NITRO_PRESET = "static"
+  NODE_VERSION = "20"
+
+# ─── Латинські аліаси ───────────────────────────────────────────────────
+# Адреси сторінок українські (/produktsiia, /pasika). Їх незручно
+# продиктувати телефоном чи надрукувати на етикетці, тому короткі
+# латинські варіанти ведуть на ті самі сторінки. 301 — щоб пошуковик
+# лишив в індексі лише основну адресу.
+
+[[redirects]]
+  from = "/products"
+  to = "/produktsiia"
+  status = 301
+
+[[redirects]]
+  from = "/prices"
+  to = "/produktsiia"
+  status = 301
+
+[[redirects]]
+  from = "/shop"
+  to = "/produktsiia"
+  status = 301
+
+[[redirects]]
+  from = "/about"
+  to = "/pasika"
+  status = 301
+
+[[redirects]]
+  from = "/apiary"
+  to = "/pasika"
+  status = 301
+
+[[redirects]]
+  from = "/delivery"
+  to = "/dostavka"
+  status = 301
+
+[[redirects]]
+  from = "/payment"
+  to = "/dostavka"
+  status = 301
+
+[[redirects]]
+  from = "/contacts"
+  to = "/kontakty"
+  status = 301
+
+[[redirects]]
+  from = "/contact"
+  to = "/kontakty"
+  status = 301
+
+[[redirects]]
+  from = "/home"
+  to = "/"
+  status = 301
+
+# ─── Старі якорі з головної ─────────────────────────────────────────────
+# На головній є блоки #sorty і #faq. Якщо десь лишиться посилання на них
+# як на окремі сторінки — ведемо на потрібне місце головної.
+
+[[redirects]]
+  from = "/sorty"
+  to = "/#sorty"
+  status = 301
+
+[[redirects]]
+  from = "/faq"
+  to = "/#faq"
+  status = 301
