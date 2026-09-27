@@ -3,7 +3,7 @@ import { site } from '~/data/site'
 
 useSeoMeta({
   title: `Контакти — ${site.name}, с. Солочин`,
-  description: `Пасіка ${site.name}: ${site.address}. Телефон ${site.phone}, пошта ${site.email}. Приїжджайте подивитися або замовляйте з доставкою по Україні.`,
+  description: `Пасіка ${site.name}: ${site.address}. Пошта ${site.email}. Приїжджайте подивитися або замовляйте з доставкою по Україні.`,
   ogTitle: `Контакти — ${site.name}`,
 })
 </script>
@@ -14,28 +14,14 @@ useSeoMeta({
       <div class="section__head">
         <h1>Контакти</h1>
         <p class="lede">
-          Найшвидше — зателефонувати. Відповідаємо самі, без кол-центру й менеджерів.
+          Пишіть на пошту або лишайте заявку — відповідаємо самі, без кол-центру й
+          менеджерів.
         </p>
       </div>
 
       <div class="grid grid--2" style="align-items: start">
         <div>
           <ul class="contact-list">
-            <li>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path
-                  d="M6.6 3h3l1.5 4-2 1.4a12 12 0 0 0 5.5 5.5l1.4-2 4 1.5v3a2 2 0 0 1-2.2 2A16.8 16.8 0 0 1 4.6 5.2 2 2 0 0 1 6.6 3Z"
-                  stroke="currentColor"
-                  stroke-width="1.6"
-                  stroke-linejoin="round"
-                />
-              </svg>
-              <div>
-                <b>Телефон</b>
-                <a :href="`tel:${site.phoneHref}`">{{ site.phone }}</a>
-              </div>
-            </li>
-
             <li>
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                 <rect
@@ -79,8 +65,8 @@ useSeoMeta({
 
           <div class="alert alert--info" style="margin-top: 32px">
             <p>
-              <b>Хочете приїхати?</b> Зателефонуйте заздалегідь — покажемо вулики й дамо
-              скуштувати всі сорти меду.
+              <b>Хочете приїхати?</b> Напишіть заздалегідь — домовимося про день, покажемо
+              вулики й дамо скуштувати всі сорти меду.
             </p>
           </div>
         </div>
@@ -100,8 +86,8 @@ useSeoMeta({
       <div class="cta-band">
         <h2>Замовити з доставкою</h2>
         <p>
-          Якщо телефонувати незручно — порахуйте вартість у калькуляторі й залиште заявку. Ми
-          передзвонимо самі, підтвердимо наявність і узгодимо доставку.
+          Порахуйте вартість у калькуляторі й залиште заявку — відповімо самі, підтвердимо
+          наявність і узгодимо доставку.
         </p>
         <p style="margin-top: 24px; margin-bottom: 0">
           <NuxtLink to="/produktsiia#rozrahunok" class="btn btn--primary">

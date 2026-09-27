@@ -29,7 +29,6 @@ const year = 2026
         <div>
           <h4>Контакти</h4>
           <ul>
-            <li><a :href="`tel:${site.phoneHref}`">{{ site.phone }}</a></li>
             <li><a :href="`mailto:${site.email}`">{{ site.email }}</a></li>
             <li>{{ site.address }}</li>
           </ul>

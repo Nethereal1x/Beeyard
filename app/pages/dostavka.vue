@@ -69,7 +69,7 @@ const parcelWeights = [
           <span class="specs__key">Гурт від 20 кг</span>
           <b class="specs__val">окремі умови</b>
           <span class="specs__note">
-            Напишіть або зателефонуйте — див.
+            Напишіть нам — див.
             <NuxtLink to="/kontakty">контакти</NuxtLink>
           </span>
         </div>

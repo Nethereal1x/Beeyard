@@ -34,7 +34,7 @@ useSeoMeta({
           </p>
           <div class="hero__cta">
             <NuxtLink to="/produktsiia" class="btn btn--primary">Дивитися ціни</NuxtLink>
-            <a :href="`tel:${site.phoneHref}`" class="btn btn--ghost">{{ site.phone }}</a>
+            <a :href="`mailto:${site.email}`" class="btn btn--ghost">Написати нам</a>
           </div>
         </div>
       </div>
@@ -153,7 +153,7 @@ useSeoMeta({
           <span class="card__num">2</span>
           <h3>Залиште заявку</h3>
           <p class="muted" style="font-size: 0.95rem">
-            Заповніть форму або просто зателефонуйте. Передзвонимо, підтвердимо наявність і
+            Заповніть форму або напишіть на пошту. Відповімо, підтвердимо наявність і
             узгодимо доставку.
           </p>
         </article>
@@ -174,7 +174,7 @@ useSeoMeta({
     <div class="wrap">
       <div class="section__head">
         <h2>Часті питання</h2>
-        <p>Те, про що нас запитують найчастіше. Не знайшли свого — телефонуйте, відповімо.</p>
+        <p>Те, про що нас запитують найчастіше. Не знайшли свого — напишіть, відповімо.</p>
       </div>
 
       <FaqAccordion />

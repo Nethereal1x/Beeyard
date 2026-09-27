@@ -11,7 +11,6 @@ useHead({
         '@type': 'LocalBusiness',
         name: site.name,
         description: site.tagline,
-        telephone: site.phone,
         email: site.email,
         address: {
           '@type': 'PostalAddress',
